@@ -1,0 +1,23 @@
+# golang image is for the stage 0. It won't be the part of the resulting image
+FROM golang:1.17 as builder
+
+# Set convenitent working directory
+WORKDIR /app
+
+# Copy the external source file to the working directory.
+COPY main.go ./
+
+# Compile the source into the static binary.
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o hello-go main.go
+
+# Use Linux Alpine as the runtime for the resulting binary.
+FROM alpine:3.15
+
+# For the stage 1 use the same named working directory.
+WORKDIR /app
+
+# Copy the output of the stage 0 to the working directory.
+COPY --from=builder /app/hello-go ./
+
+# The container entry point.
+CMD ["/app/hello-go"]
