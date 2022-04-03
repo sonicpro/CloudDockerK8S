@@ -18,7 +18,7 @@ EXPOSE 8080
 # Map builder container workdir to the same named runtime container workdir
 WORKDIR /opt/time-service
 
-# Copy the build on the first stage binary to the new workdir
+# Copy the built binary from the first stage to the new workdir
 COPY --from=builder /opt/time-service/time-service .
 
 CMD [ "/opt/time-service/time-service" ]

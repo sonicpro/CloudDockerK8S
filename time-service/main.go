@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"os"
 )
 
 type Time struct {
@@ -16,9 +17,10 @@ type Time struct {
 func main() {
 	log.Print("Начало работы сервиса time-service");
 
-	http.HandleFunc("/time", serverTime)
-	http.HandleFunc("/nanotime", serverNanoTime)
-	log.Fatal(http.ListenAndServe("0.0.0.0:8080", nil))
+	http.HandleFunc("/time", serveTime)
+	http.HandleFunc("/nanotime", serveNanoTime)
+	log.Print(http.ListenAndServe("0.0.0.0:8080", nil))
+	os.Exit(0)
 }
 
 func serveTime(w http.ResponseWriter, r *http.Request) {
